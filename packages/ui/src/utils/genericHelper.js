@@ -361,7 +361,7 @@ export const getFolderName = (base64ArrayStr) => {
             filenames.push(filename)
         }
         return filenames.length ? filenames.join(',') : ''
-    } catch (e) {
+    } catch {
         return ''
     }
 }
@@ -540,12 +540,15 @@ export const throttle = (func, limit) => {
             lastRan = Date.now()
         } else {
             clearTimeout(lastFunc)
-            lastFunc = setTimeout(() => {
-                if (Date.now() - lastRan >= limit) {
-                    func(...args)
-                    lastRan = Date.now()
-                }
-            }, limit - (Date.now() - lastRan))
+            lastFunc = setTimeout(
+                () => {
+                    if (Date.now() - lastRan >= limit) {
+                        func(...args)
+                        lastRan = Date.now()
+                    }
+                },
+                limit - (Date.now() - lastRan)
+            )
         }
     }
 }
@@ -613,7 +616,7 @@ export const removeDuplicateURL = (message) => {
 export const isValidURL = (url) => {
     try {
         return new URL(url)
-    } catch (err) {
+    } catch {
         return undefined
     }
 }
@@ -627,7 +630,7 @@ export const formatDataGridRows = (rows) => {
                 id: index
             }
         })
-    } catch (e) {
+    } catch {
         return []
     }
 }
@@ -643,7 +646,7 @@ export const setLocalStorageChatflow = (chatflowid, chatId, saveObj = {}) => {
         try {
             const parsedChatDetails = JSON.parse(chatDetails)
             localStorage.setItem(`${chatflowid}_INTERNAL`, JSON.stringify({ ...parsedChatDetails, ...obj }))
-        } catch (e) {
+        } catch {
             const chatId = chatDetails
             obj.chatId = chatId
             localStorage.setItem(`${chatflowid}_INTERNAL`, JSON.stringify(obj))
@@ -656,7 +659,7 @@ export const getLocalStorageChatflow = (chatflowid) => {
     if (!chatDetails) return {}
     try {
         return JSON.parse(chatDetails)
-    } catch (e) {
+    } catch {
         return {}
     }
 }
@@ -674,7 +677,7 @@ export const removeLocalStorageChatHistory = (chatflowid) => {
         } else {
             localStorage.removeItem(`${chatflowid}_INTERNAL`)
         }
-    } catch (e) {
+    } catch {
         return
     }
 }
@@ -705,8 +708,8 @@ export const getConfigExamplesForJS = (configData, bodyType, isMultiple, stopNod
             finalStr += !isMultiple
                 ? ``
                 : stopNodeId
-                ? `formData.append("stopNodeId", "${stopNodeId}")\n`
-                : `formData.append("question", "Hey, how are you?")\n`
+                  ? `formData.append("stopNodeId", "${stopNodeId}")\n`
+                  : `formData.append("question", "Hey, how are you?")\n`
     }
     return finalStr
 }
@@ -728,8 +731,8 @@ export const getConfigExamplesForPython = (configData, bodyType, isMultiple, sto
             finalStr += !isMultiple
                 ? `\n`
                 : stopNodeId
-                ? `\n    "stopNodeId": "${stopNodeId}"\n`
-                : `\n    "question": "Hey, how are you?"\n`
+                  ? `\n    "stopNodeId": "${stopNodeId}"\n`
+                  : `\n    "question": "Hey, how are you?"\n`
     }
     return finalStr
 }
@@ -753,10 +756,10 @@ export const getConfigExamplesForCurl = (configData, bodyType, isMultiple, stopN
                 bodyType === 'json'
                     ? ` }`
                     : !isMultiple
-                    ? ``
-                    : stopNodeId
-                    ? ` \\\n     -F "stopNodeId=${stopNodeId}"`
-                    : ` \\\n     -F "question=Hey, how are you?"`
+                      ? ``
+                      : stopNodeId
+                        ? ` \\\n     -F "stopNodeId=${stopNodeId}"`
+                        : ` \\\n     -F "question=Hey, how are you?"`
         else finalStr += bodyType === 'json' ? `, ` : ` \\`
     }
     return finalStr
