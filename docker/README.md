@@ -2,12 +2,19 @@
 
 Starts Flowise from [DockerHub Image](https://hub.docker.com/r/flowiseai/flowise)
 
-## Usage
+## Usage with Flowise/flowise Image
 
 1. Create `.env` file and specify the `PORT` (refer to `.env.example`)
 2. `docker compose up -d`
 3. Open [http://localhost:3000](http://localhost:3000)
 4. You can bring the containers down by `docker compose stop`
+
+## Usage with Local Build Image
+
+1. Create `.env` file and specify the `PORT` (refer to `.env.example`)
+2. `docker compose -f docker-compose.local.yml -p flowise up -d`
+3. Open [http://localhost:3000](http://localhost:3000)
+4. You can bring the containers down by `docker compose -f docker-compose.local.yml stop`
 
 ## 🔒 Authentication
 
@@ -33,4 +40,4 @@ If you like to persist your data (flows, logs, apikeys, credentials), set these 
 -   SECRETKEY_PATH=/root/.flowise
 -   BLOB_STORAGE_PATH=/root/.flowise/storage
 
-Flowise also support different environment variables to configure your instance. Read [more](https://docs.flowiseai.com/environment-variables)
+Flowise also supports different environment variables to configure your instance. Read [more](https://docs.flowiseai.com/environment-variables)

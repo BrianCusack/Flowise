@@ -1,0 +1,15 @@
+services:
+    flowise-service:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: flowise-local:latest
+        container_name: flowise_container
+        restart: always
+        env_file:
+            - .env
+        ports:
+            - '${PORT:-3000}:${PORT:-3000}'
+        volumes:
+            - ~/.flowise:/root/.flowise
+        entrypoint: /bin/sh -c "sleep 3; flowise start"
